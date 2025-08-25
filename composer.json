@@ -1,5 +1,5 @@
 {
-    "name": "netgen/ezpublish-legacy-installer",
+    "name": "se7enxweb/exponential-legacy-installer",
     "type": "composer-plugin",
     "description": "Installer for eZ Publish legacy extensions and legacy kernel itself.",
     "license": "GPL-2.0",
@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "php": "^7.4 || ^8.1",
+        "php": "^7.4 || ^8.1 || ^8.2",
         "composer-plugin-api": "^1.0 || ^2.0"
     },
     "replace": {
