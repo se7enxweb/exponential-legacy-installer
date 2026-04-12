@@ -28,6 +28,7 @@
         "composer-plugin-api": "^1.0 || ^2.0"
     },
     "replace": {
-        "ezsystems/ezpublish-legacy-installer": "*"
+        "ezsystems/ezpublish-legacy-installer": "*",
+        "se7enxweb/ezpublish-legacy-installer": "*"
     }
 }
