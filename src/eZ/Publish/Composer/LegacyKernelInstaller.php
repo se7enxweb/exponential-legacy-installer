@@ -79,7 +79,9 @@ class LegacyKernelInstaller extends LegacyInstaller
                 $this->io->write( "Updating new code over existing installation." );
             }
 
-            $fileSystem->copyThenRemove( $this->ezpublishLegacyDir, $actualLegacyDir );
+            $sourceDir = $this->resolveCopyPath( $this->ezpublishLegacyDir );
+            $targetDir = $this->resolveCopyPath( $actualLegacyDir );
+            $fileSystem->copyThenRemove( $sourceDir, $targetDir );
 
             // if parent::install installed binaries, then the resulting shell/bat stubs will not work. We have to redo them
             if ( method_exists($this, 'removeBinaries') )
@@ -138,7 +140,9 @@ class LegacyKernelInstaller extends LegacyInstaller
             }
 
             /// @todo the following function does not warn of any failures in copying stuff over. We should probably fix it...
-            $fileSystem->copyThenRemove( $this->ezpublishLegacyDir, $actualLegacyDir );
+            $sourceDir = $this->resolveCopyPath( $this->ezpublishLegacyDir );
+            $targetDir = $this->resolveCopyPath( $actualLegacyDir );
+            $fileSystem->copyThenRemove( $sourceDir, $targetDir );
 
             $this->ezpublishLegacyDir = $actualLegacyDir;
         };
@@ -169,5 +173,26 @@ class LegacyKernelInstaller extends LegacyInstaller
         }
 
         return $tmpDir;
+    }
+
+    /**
+     * Resolves dot/empty installer paths to an absolute path for Composer 2.10 compatibility.
+     *
+     * Composer's Filesystem normalizer can collapse '.' to an empty string, which makes
+     * copyThenRemove() fail while trying to ensure a directory with no name.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function resolveCopyPath( $path )
+    {
+        $path = rtrim( (string) $path, '/' );
+        if ( $path === '' || $path === '.' )
+        {
+            return getcwd();
+        }
+
+        return $path;
     }
 }
