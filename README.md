@@ -92,6 +92,17 @@ Why this does not break platform usage:
 - The change is backward compatible: older Composer versions continue to work, because absolute paths are valid there as well.
 - Extension install behavior is unaffected: only the legacy kernel installer copy-path resolution is adjusted.
 
+## Where the legacy kernel is installed
+
+`extra.ezpublish-legacy-dir` in the project's `composer.json` decides. Without it:
+
+- a Symfony project goes to `ezpublish_legacy/`: one with `extra.symfony-app-dir` (Symfony 2 and 3), or, since 2.2.5,
+  a Symfony Flex project (Symfony 4 and later: `extra.symfony` in `composer.json`, or a `config/bundles.php` file);
+- anything else goes to the project root (`.`), as a standalone Exponential 6 installation expects.
+
+Before 2.2.5 a Symfony Flex project without the setting, such as a new Exponential Platform project with the Legacy
+Bridge, got the kernel copied over its root, `bin/console` and `composer.json` included.
+
 ### eZ Publish 5 case
 By default, the legacy extension installer assumes that eZ Publish legacy is installed in the current folder; in other
 words, it is configured for pure-eZ Publish 4 projects.

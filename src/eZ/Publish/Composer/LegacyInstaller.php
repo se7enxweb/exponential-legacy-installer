@@ -35,8 +35,10 @@ abstract class LegacyInstaller extends LibraryInstaller
         {
             $this->ezpublishLegacyDir = rtrim( $options['ezpublish-legacy-dir'], '/' );
         }
-        else if ( isset( $options['symfony-app-dir'] ) )
+        else if ( isset( $options['symfony-app-dir'] ) || isset( $options['symfony'] ) || is_file( 'config/bundles.php' ) )
         {
+            // Symfony Flex projects (Symfony 4 and later) have no symfony-app-dir: extra.symfony or config/bundles.php
+            // tells them apart. Without this the kernel was copied over the project root, bin/console included.
             // For Symfony install (eZ Platform or otherwise), default to `ezpublish_legacy` to avoid messing up root folder
             $this->ezpublishLegacyDir = 'ezpublish_legacy';
         }
